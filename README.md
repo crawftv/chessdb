@@ -3,3 +3,5 @@ Includes:
 - a database of chess openings with 100 plus games at high elo's
 - data from the FICS Games database
 - notebooks analyzing the data
+
+## Use Exploratory notebooks to view work
