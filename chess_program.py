@@ -1,62 +1,54 @@
-#import chess.svg
-import random
-import chess as chess
+import chess
+from helper_functions import generate_fics_chart, generate_high_elo_move_commentary, generate_high_elo_weighted_moves
+import chess.svg
 import sys
-#import pandas as pd
-#import numpy as np
-
-board = chess.Board()
-move_list = []
 
 def play():
-    while len(move_list) <8:
-        chess_practice()
-        if len(move_list) == 8:
-          sys.exit(0)
-        break
-
-def chess_practice():
-    
+    board = chess.Board()
+    move_list = []
     player_color = color_picker()
-   
-    print(player_color)
-    if player_color == 'w':
-        player_move()
+    while len(move_list) <=8:
         
-    elif player_color =='b':
-        computer_move()
-            
+        chess_practice(board, player_color, move_list)
+        if len(move_list) == 8:
+          sys.exit()
+        break
+           
 def color_picker():
     player_color = input("What color do you want to play: \n 'w' for White, 'b' for Black\n")
     return player_color
 
-def player_move():
+def chess_practice(board, player_color, move_list):
+    if player_color == 'w':
+        player_move(board, move_list)
+        
+    elif player_color =='b':
+        computer_move(board, move_list)
+
+def player_move(board, move_list):
+    generate_fics_chart(move_list)
     move_string = input("Please enter your move. \n i.e. e4 or Nf3 \n")
-    move_list.append(move_string)
+    
     try: 
         board.push_san(move_string)
-        return computer_move()
-        
+        move_list.append(move_string)
+        print(move_list, len(move_list))
+        generate_high_elo_move_commentary(move_list)
+        return computer_move(board, move_list)
     except ValueError: 
-        print("That is not a legal move. Legal moves are", board.legal_moves)
-        print(board)
-        player_move()
+        print(move_string + " is not a legal move. Legal moves are", board.legal_moves)
+        return player_move(board, move_list)
 
-def computer_move():
-    moves=['e5','d5','a5','b5']
-    s = random.choice(moves)   
-    
+def computer_move(board, move_list):   
     try:
-      board.push_san(s)
-      move_list.append(s)
+        s = generate_high_elo_weighted_moves(move_list)
+        board.push_san(s)
+        move_list.append(s)
+        print("Computer Plays " +s)
+        
+        print (board)
+        print(move_list, len(move_list))
+
+        return player_move(board, move_list)
     except ValueError:
-      computer_move()
-    
-    print(board)
-    print(move_list)
-    return player_move()
-
-#a.groupby(['move1w','10_q_buckets']).agg({'10_q_buckets' : np.size}).unstack(level=1).plot(kind='bar')
-
-def generate_charts(move_list):
-  pass
+        return computer_move(board, move_list)    

@@ -6,10 +6,10 @@ FICS_deciles.csv
 FICS_data_fixed.csv
 a.csv
 E:\chessdb\chess - chess tempo openings database.csv
-chessdb0-1
 .vscode
 .ipynb_checkpoints
 alpha0_fixed.csv
 alpha0.csv
 alpha0_df.csv
+__pycache__/
 FICS_data_fixed_df.csv
